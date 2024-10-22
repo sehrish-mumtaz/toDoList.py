@@ -1,38 +1,25 @@
 import streamlit as st
 
-# List to store tasks
-if 'tasks' not in st.session_state:
-    st.session_state.tasks = []
-
 # Title of the app
 st.title("To-Do List App")
 
-# Input field to add tasks
-task = st.text_input("Add a new task:")
+# Text input for the task
+task = st.text_input("Enter a task")
 
-# Add task button
+# Number input for the task priority
+# Ensure min_value and max_value are correctly set
+task_priority = st.number_input("Enter task priority (0-10)", min_value=0, max_value=10, value=0)
+
+# Button to add task
 if st.button("Add Task"):
-    if task:
-        st.session_state.tasks.append(task)
-        st.success(f"'{task}' added to your list")
+    if task:  # Check if the task is not empty
+        st.write(f"Task added: {task} with priority {task_priority}")
     else:
-        st.error("Please enter a task")
+        st.error("Please enter a task before adding it.")
 
-# Display the list of tasks
-if st.session_state.tasks:
-    st.write("Your tasks:")
-    for idx, task in enumerate(st.session_state.tasks):
-        st.write(f"{idx + 1}. {task}")
+# Optional: Display the current task list
+st.write("### Current Tasks")
+if task:
+    st.write(f"- {task} (Priority: {task_priority})")
 else:
-    st.write("Your to-do list is empty.")
-
-# Input field to remove tasks by number
-task_to_remove = st.number_input("Enter task number to remove:", min_value=1, max_value=len(st.session_state.tasks), step=1)
-
-# Remove task button
-if st.button("Remove Task"):
-    if st.session_state.tasks:
-        task = st.session_state.tasks.pop(task_to_remove - 1)
-        st.success(f"'{task}' removed from your list")
-    else:
-        st.error("No tasks to remove")
+    st.write("No tasks added yet.")
